@@ -1,0 +1,474 @@
+package gameoflifeproject;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.awt.Image;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.net.URL;
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/**
+ *
+ * @author abuhai
+ */
+public class GameOfLifeForm extends javax.swing.JFrame {
+
+    
+    private int widthPanel = 100;
+    private int heightPanel = 50;
+    private boolean[][] currentMove = new boolean[heightPanel][widthPanel];
+    private boolean[][] nextMove = new boolean[heightPanel][widthPanel];
+    private Image offScrImage;
+    private Graphics offScrGraph;
+    private int cnt;
+    private int genNumber;
+    private boolean firstTimeBool;
+    private boolean playPressed;
+    private boolean startPressed;
+    
+    public GameOfLifeForm() {
+        initComponents();
+        firstTimeBool = true;
+        playPressed = false;
+        startPressed = false;
+        cnt = 0;
+        genNumber = -3;
+        offScrImage = createImage(worldPanel.getWidth(), worldPanel.getHeight());
+        offScrGraph = offScrImage.getGraphics();
+        
+        setResizable(false);
+        Timer time = new Timer();
+        TimerTask task = new TimerTask(){
+            public void run(){
+                if(playPressed){
+                    if(startPressed)
+                    {
+                        for(int i = 0; i < heightPanel; i++){
+                            for(int j = 0; j < widthPanel; j++){
+                                nextMove[i][j] = decide(i,j);
+                            }
+                        }
+                        for(int i = 0; i < heightPanel; i++){
+                            for(int j = 0; j < widthPanel; j++){
+                                currentMove[i][j] = nextMove[i][j];
+                            }
+                        }
+                    }
+                   
+                        rePaint();
+                    
+                            
+                }
+            }
+        };
+        time.scheduleAtFixedRate(task, 0, 100);
+        
+    }
+     private boolean decide(int i, int j){
+        int neighbors = 0;
+        
+        if(j > 0){
+            if(currentMove[i][j-1]) neighbors++;
+            if(i>0) if(currentMove[i-1][j-1]) neighbors++;
+            if(i<heightPanel-1) if(currentMove[i+1][j-1]) neighbors++;
+        }
+        if(j < widthPanel-1){
+            if(currentMove[i][j+1]) neighbors++;
+            if(i>0) if(currentMove[i-1][j+1]) neighbors++;
+            if(i<heightPanel-1) if(currentMove[i+1][j+1]) neighbors++;
+        }
+        if(i>0) if(currentMove[i-1][j]) neighbors++;
+        if(i<heightPanel-1) if(currentMove[i+1][j]) neighbors++;
+        if(neighbors == 3) return true;
+        if(currentMove[i][j] && neighbors == 2) return true;
+        return false;
+    }
+    
+    private void rePaint() {
+        
+        System.out.print("Repaint " + cnt + "\n");
+        cnt++;
+        if(startPressed)
+        {
+            genNumber++;
+            if(genNumber > 0)
+            {
+                genLabel.setText("Generation: " + genNumber);
+            }
+        }
+        offScrGraph.setColor(worldPanel.getBackground());
+        offScrGraph.fillRect(0,0, worldPanel.getWidth(), worldPanel.getHeight());
+        for(int i = 0; i < heightPanel; i++)
+        {
+            for(int j = 0; j < widthPanel; j++)
+            {
+                try
+                {
+                if(currentMove[i][j])
+                {
+                    offScrGraph.setColor(Color.ORANGE);
+                    int x = j * worldPanel.getWidth()/widthPanel;
+                    int y = i * worldPanel.getHeight()/heightPanel;
+                    offScrGraph.fillRect(x, y, worldPanel.getWidth()/widthPanel, worldPanel.getHeight()/heightPanel);
+                }
+                }
+                catch(Exception ex)
+                {
+                    System.out.println(ex.toString() + " " + i + " " + j);
+                }
+            }
+        }
+        
+        offScrGraph.setColor(Color.black);
+        
+        
+        for(int i = 1; i < heightPanel; i++)
+        {
+            int y = i * worldPanel.getHeight()/heightPanel;
+            offScrGraph.drawLine(0, y, worldPanel.getWidth(), y);
+        }
+        for(int j = 1; j < widthPanel; j++)
+        {
+            int x = j * worldPanel.getWidth()/widthPanel;
+            offScrGraph.drawLine(x, 0, x, worldPanel.getHeight());
+
+        }
+
+         worldPanel.getGraphics().drawImage(offScrImage, 0, 0, worldPanel);
+
+    }
+    
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        worldPanel = new javax.swing.JPanel();
+        exitButton = new javax.swing.JButton();
+        startButton = new javax.swing.JButton();
+        heightTextField = new javax.swing.JTextField();
+        widthTextField = new javax.swing.JTextField();
+        intervalTextField = new javax.swing.JTextField();
+        heightLabel = new javax.swing.JLabel();
+        widthLabel = new javax.swing.JLabel();
+        intervalLabel = new javax.swing.JLabel();
+        genLabel = new javax.swing.JLabel();
+        revertButton = new javax.swing.JButton();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        worldPanel.setBackground(new java.awt.Color(51, 45, 37));
+        worldPanel.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseDragged(java.awt.event.MouseEvent evt) {
+                worldPanelMouseDragged(evt);
+            }
+        });
+        worldPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                worldPanelMouseClicked(evt);
+            }
+        });
+        worldPanel.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentResized(java.awt.event.ComponentEvent evt) {
+                worldPanelComponentResized(evt);
+            }
+        });
+
+        javax.swing.GroupLayout worldPanelLayout = new javax.swing.GroupLayout(worldPanel);
+        worldPanel.setLayout(worldPanelLayout);
+        worldPanelLayout.setHorizontalGroup(
+            worldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 907, Short.MAX_VALUE)
+        );
+        worldPanelLayout.setVerticalGroup(
+            worldPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        exitButton.setText("Exit");
+        exitButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                exitButtonMouseClicked(evt);
+            }
+        });
+
+        startButton.setText("Play");
+        startButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                startButtonMouseClicked(evt);
+            }
+        });
+
+        heightTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                heightTextFieldActionPerformed(evt);
+            }
+        });
+
+        widthTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                widthTextFieldActionPerformed(evt);
+            }
+        });
+
+        intervalTextField.setToolTipText("");
+        intervalTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                intervalTextFieldActionPerformed(evt);
+            }
+        });
+
+        heightLabel.setText("Height");
+
+        widthLabel.setText("Width");
+
+        intervalLabel.setText("Interval");
+
+        genLabel.setText("Generation: 0");
+
+        revertButton.setText("Revert");
+        revertButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                revertButtonMouseClicked(evt);
+            }
+        });
+        revertButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                revertButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(worldPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(exitButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(widthTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(widthLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(heightTextField, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(heightLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(startButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(intervalLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(intervalTextField)
+                    .addComponent(genLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                    .addComponent(revertButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(revertButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(heightLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(heightTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(widthLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(widthTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(intervalLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(intervalTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(genLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 156, Short.MAX_VALUE)
+                .addComponent(exitButton, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addComponent(worldPanel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        worldPanel.getAccessibleContext().setAccessibleName("worldPanel1");
+        worldPanel.getAccessibleContext().setAccessibleDescription("");
+        exitButton.getAccessibleContext().setAccessibleName("exitButton");
+        startButton.getAccessibleContext().setAccessibleName("startButton");
+        heightTextField.getAccessibleContext().setAccessibleName("textFieldHeight");
+        widthTextField.getAccessibleContext().setAccessibleName("textFieldWidth");
+        intervalTextField.getAccessibleContext().setAccessibleName("textFieldInterval");
+        heightLabel.getAccessibleContext().setAccessibleName("labelHeight");
+        widthLabel.getAccessibleContext().setAccessibleName("labelWidth");
+        intervalLabel.getAccessibleContext().setAccessibleName("labelInterval");
+        genLabel.getAccessibleContext().setAccessibleName("genLabel");
+        revertButton.getAccessibleContext().setAccessibleName("Revert");
+
+        getAccessibleContext().setAccessibleName("appJFrame");
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void heightTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_heightTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_heightTextFieldActionPerformed
+
+    private void widthTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_widthTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_widthTextFieldActionPerformed
+
+    private void intervalTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intervalTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_intervalTextFieldActionPerformed
+
+    private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
+        System.exit(0);
+    }//GEN-LAST:event_exitButtonMouseClicked
+
+    private void worldPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_worldPanelMouseClicked
+        /*
+        System.out.println("Am dat click!\n");
+        int j = evt.getX() * widthPanel / worldPanel.getWidth();
+        int i = evt.getY() * heigthPanel / worldPanel.getHeight();
+        currentMove[i][j] = !currentMove[i][j];
+        repaint();
+        */
+    }//GEN-LAST:event_worldPanelMouseClicked
+
+    private void startButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMouseClicked
+        
+        if(!heightTextField.getText().equals("") && !widthTextField.getText().equals(""))
+        {
+            System.out.println("heigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigth");
+            heightPanel = Integer.parseInt(heightTextField.getText());
+            widthPanel = Integer.parseInt(widthTextField.getText());
+            boolean[][] newCurrentMove = new boolean[heightPanel][widthPanel];
+            boolean[][] newNextMove = new boolean[heightPanel][widthPanel];
+            currentMove = newCurrentMove;
+            nextMove = newNextMove;
+        }
+        
+        if(firstTimeBool)
+        {
+            firstTimeBool = false;
+            genNumber = -4;
+        }
+        if(playPressed)
+        {
+            startPressed = !startPressed;
+        }
+        playPressed = true;
+
+        if(playPressed && !startPressed)
+        {
+            startButton.setText("Start");
+        }
+        else 
+        if(playPressed && startPressed)
+        {
+            startButton.setText("Pause");
+        }
+        else startButton.setText("Start");
+        rePaint();    }//GEN-LAST:event_startButtonMouseClicked
+
+    private void worldPanelComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_worldPanelComponentResized
+        offScrImage = createImage(worldPanel.getWidth(), worldPanel.getHeight());
+        offScrGraph = offScrImage.getGraphics();
+         rePaint();
+    }//GEN-LAST:event_worldPanelComponentResized
+
+    private void worldPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_worldPanelMouseDragged
+        if(playPressed)
+        {
+            int j = widthPanel * evt.getX() / worldPanel.getWidth();
+            int i = heightPanel * evt.getY() / worldPanel.getHeight();
+            if(SwingUtilities.isLeftMouseButton(evt))
+            {
+                currentMove[i][j] = true;
+            }
+            else 
+                currentMove[i][j] = false;
+            rePaint();
+        }
+    }//GEN-LAST:event_worldPanelMouseDragged
+
+    private void revertButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revertButtonMouseClicked
+        playPressed = false;
+        startPressed = false;
+        startButton.setText("Play");
+        intervalTextField.setText("");
+        heightTextField.setText("");
+        widthTextField.setText("");
+        genNumber = 0;
+        genLabel.setText("Generation: " + genNumber);
+
+        for(int i = 0; i < heightPanel; i++)
+        {
+            for(int j = 0; j < widthPanel; j++)
+            {
+               currentMove[i][j] = false;
+               nextMove[i][j] = false;
+            }
+        }
+        rePaint();
+    }//GEN-LAST:event_revertButtonMouseClicked
+
+    private void revertButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_revertButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_revertButtonActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(GameOfLifeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(GameOfLifeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(GameOfLifeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(GameOfLifeForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new GameOfLifeForm().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton exitButton;
+    private javax.swing.JLabel genLabel;
+    private javax.swing.JLabel heightLabel;
+    private javax.swing.JTextField heightTextField;
+    private javax.swing.JLabel intervalLabel;
+    private javax.swing.JTextField intervalTextField;
+    private javax.swing.JButton revertButton;
+    private javax.swing.JButton startButton;
+    private javax.swing.JLabel widthLabel;
+    private javax.swing.JTextField widthTextField;
+    private javax.swing.JPanel worldPanel;
+    // End of variables declaration//GEN-END:variables
+}
