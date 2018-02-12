@@ -27,9 +27,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
 
-/* Icon - https://icons8.com/license CC BY-ND 3.0 No changes made 
-package gameoflifeproject;
-*/
+// Icon - https://icons8.com/license CC BY-ND 3.0 No changes made 
 
 /**
  * <h1>Conway's Game of Life Project</h1>
@@ -39,10 +37,10 @@ package gameoflifeproject;
  * the the British mathematician John Horton Conway in 1970. It's a simple "game"
  * based on 4 basic rules:<br><br>
  * 
- * 1. Any live cell with fewer than two live neighbours dies, as if caused by underpopulation.<br>
- * 2. Any live cell with two or three live neighbours lives on to the next generation.<br>
- * 3. Any live cell with more than three live neighbours dies, as if by overpopulation.<br>
- * 4. Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction. <br>
+ * 1. Any live cell with fewer than two live neighbors dies, as if caused by under population.<br>
+ * 2. Any live cell with two or three live neighbors lives on to the next generation.<br>
+ * 3. Any live cell with more than three live neighbors dies, as if by overpopulation.<br>
+ * 4. Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction. <br>
  * </p>
  * <p> 
  * I chose this project because I was always interested in how patters form and how,
