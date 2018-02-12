@@ -30,7 +30,7 @@ public class GameOfLifeProject {
     }
     public void startApp()
     {
-        System.out.println("Good day! Dobrý den! Buna ziua");
+        System.out.println("Good day! Dobrý den! Buna ziua!");
         
         String workingDir = System.getProperty("user.dir");
         workingDir = workingDir + "/images/icons-c.png";
