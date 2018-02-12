@@ -8,32 +8,52 @@ import java.util.TimerTask;
 import java.awt.Image;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.net.URL;
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
- *
- * @author abuhai
+ * <h2>Form Class</h2>
+ * Creates the form and executes the required methods.
+ * 
+ * Class used to create the panel, populate it with objects and execute the program.
+ * 
+ * @author Alexandru Buhai
+ * @version 1.1
  */
+
+
 public class GameOfLifeForm extends javax.swing.JFrame {
 
     
-    private int widthPanel = 100;
+    private int widthPanel = 100; //dimensions of the panel
     private int heightPanel = 50;
-    private boolean[][] currentMove = new boolean[heightPanel][widthPanel];
-    private boolean[][] nextMove = new boolean[heightPanel][widthPanel];
+    private boolean[][] currentMove = new boolean[heightPanel][widthPanel]; //current state of the table
+    private boolean[][] nextMove = new boolean[heightPanel][widthPanel]; //next state of the table
     private Image offScrImage;
     private Graphics offScrGraph;
-    private int cnt;
-    private int genNumber;
-    private boolean firstTimeBool;
-    private boolean playPressed;
-    private boolean startPressed;
+    private int cnt; 
+    private int genNumber; //number of the generation
+    private boolean firstTimeBool; 
+    private boolean playPressed; //has play button been pressed 
+    private boolean startPressed; //has start button been pressed
+    private Integer intervalCount; //timer count
+    Timer timer = new Timer();
     
+    /**
+     * Scheduler for the timer. 
+     * Takes the value from the spinner and changes the 
+     * schedule for the timer. 
+    */
+    public void schedule() 
+    {
+        intervalCount = (Integer) intervalSpinner.getValue();
+        timer.schedule(new MyTimer(),intervalCount);
+    }
+    
+    
+    
+    /**
+     * Constructor for the form.
+     * <p>In the constructor we also implement the <b>actionPerformed</b> for the comboBox and draw the required shape.</p>
+     */
     public GameOfLifeForm() {
         initComponents();
         firstTimeBool = true;
@@ -43,7 +63,8 @@ public class GameOfLifeForm extends javax.swing.JFrame {
         genNumber = -3;
         offScrImage = createImage(worldPanel.getWidth(), worldPanel.getHeight());
         offScrGraph = offScrImage.getGraphics();
-        
+        intervalCount = (Integer) intervalSpinner.getValue();
+
         drawComboBox.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent event) 
@@ -171,35 +192,18 @@ public class GameOfLifeForm extends javax.swing.JFrame {
                 rePaint();
             }
         });
-        
-        //setResizable(false);
-        Timer time = new Timer();
-        TimerTask task = new TimerTask(){
-            public void run(){
-                if(playPressed){
-                    if(startPressed)
-                    {
-                        for(int i = 0; i < heightPanel; i++){
-                            for(int j = 0; j < widthPanel; j++){
-                                nextMove[i][j] = decide(i,j);
-                            }
-                        }
-                        for(int i = 0; i < heightPanel; i++){
-                            for(int j = 0; j < widthPanel; j++){
-                                currentMove[i][j] = nextMove[i][j];
-                            }
-                        }
-                    }
-                    rePaint();
-                    
-                }
-                
-            }
-        };
-        time.scheduleAtFixedRate(task, 0, 300);
-        
+        schedule();
     }
-     private boolean decide(int i, int j){
+    
+    /**
+     * This method applies the laws for the Game of Life.
+     * 
+     * Check the current state and count the neighbors.
+     * @param i This is the position on the y axis.
+     * @param j This is the position on the x axis.
+     * @return boolean This returns the state of the current square
+    */
+     private boolean applyLaws(int i, int j){
         int neighbors = 0;
         
         if(j > 0){
@@ -241,6 +245,11 @@ public class GameOfLifeForm extends javax.swing.JFrame {
         return false;
     }
     
+    /**
+     * This method draws on the panel.
+     * <p> It first draws the lines and then it uses the <b>currentMove</b> to see what squares are 
+     * alive and which aren't and color them accordingly. </p>
+    */
     private void rePaint() {
         
         System.out.print("Repaint " + cnt + "\n");
@@ -294,6 +303,76 @@ public class GameOfLifeForm extends javax.swing.JFrame {
          worldPanel.getGraphics().drawImage(offScrImage, 0, 0, worldPanel);
 
     }
+    
+   /**
+    * Clean currentMove and nextMove tables.
+    */
+    private void clean() {
+        for(int i = 0; i < heightPanel; i++)
+        {
+            for(int j = 0; j < widthPanel; j++)
+            {
+                currentMove[i][j] = false;
+                nextMove[i][j] = false;
+            }
+        }
+    }
+    
+    /**
+     * Starts the timer and resets the height and width of the table.
+     */
+    private void startButtonClicked() throws NumberFormatException {
+        if(!heightTextField.getText().equals("") && !widthTextField.getText().equals(""))
+        {
+            heightPanel = Integer.parseInt(heightTextField.getText());
+            widthPanel = Integer.parseInt(widthTextField.getText());
+            boolean[][] newCurrentMove = new boolean[heightPanel][widthPanel];
+            boolean[][] newNextMove = new boolean[heightPanel][widthPanel];
+            currentMove = newCurrentMove;
+            nextMove = newNextMove;
+        }
+        
+        if(firstTimeBool)
+        {
+            firstTimeBool = false;
+            genNumber = -4;
+        }
+        if(playPressed)
+        {
+            startPressed = !startPressed;
+        }
+        playPressed = true;
+        
+        if(playPressed && !startPressed)
+        {
+            startButton.setText("Start");
+            intervalCount = (Integer) intervalSpinner.getValue();
+        }
+        else
+            if(playPressed && startPressed)
+            {
+                startButton.setText("Pause");
+            }
+            else startButton.setText("Start");
+    }
+    /**
+     * Cleans the form and resets the parameters.
+     */
+    private void revertButtonClicked() {
+        playPressed = false;
+        startPressed = false;
+        startButton.setText("Play");
+        // intervalTextField.setText("");
+        heightTextField.setText("");
+        widthTextField.setText("");
+        genNumber = 0;
+        genLabel.setText("Generation: " + genNumber);
+        intervalCount = (Integer) intervalSpinner.getValue();
+        
+        clean();
+        rePaint();
+    }
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -514,21 +593,23 @@ public class GameOfLifeForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void worldPanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_worldPanelMouseClicked
-        /*
-        System.out.println("Am dat click!\n");
-        int j = evt.getX() * widthPanel / worldPanel.getWidth();
-        int i = evt.getY() * heigthPanel / worldPanel.getHeight();
-        currentMove[i][j] = !currentMove[i][j];
-        repaint();
-        */
+            
     }//GEN-LAST:event_worldPanelMouseClicked
 
+    /**
+     * Calls rePaint method if the world gets resized.
+     * @param evt a java.awt.event.ComponentEvent
+    */
     private void worldPanelComponentResized(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_worldPanelComponentResized
         offScrImage = createImage(worldPanel.getWidth(), worldPanel.getHeight());
         offScrGraph = offScrImage.getGraphics();
          rePaint();
     }//GEN-LAST:event_worldPanelComponentResized
 
+    /**
+     * 
+     * @param evt a java.awt.event.MouseEvent
+    */
     private void worldPanelMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_worldPanelMouseDragged
         if(playPressed)
         {
@@ -552,6 +633,10 @@ public class GameOfLifeForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_heightTextFieldActionPerformed
 
+    /**
+     * Exits the application.
+     * @param evt Not used
+     */
     private void exitButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_exitButtonMouseClicked
         System.exit(0);
     }//GEN-LAST:event_exitButtonMouseClicked
@@ -560,66 +645,18 @@ public class GameOfLifeForm extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_revertButtonActionPerformed
 
+    
     private void revertButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_revertButtonMouseClicked
-        playPressed = false;
-        startPressed = false;
-        startButton.setText("Play");
-        // intervalTextField.setText("");
-        heightTextField.setText("");
-        widthTextField.setText("");
-        genNumber = 0;
-        genLabel.setText("Generation: " + genNumber);
-
-        clean();
-        rePaint();
+        revertButtonClicked();
     }//GEN-LAST:event_revertButtonMouseClicked
-
-    private void clean() {
-        for(int i = 0; i < heightPanel; i++)
-        {
-            for(int j = 0; j < widthPanel; j++)
-            {
-                currentMove[i][j] = false;
-                nextMove[i][j] = false;
-            }
-        }
-    }
-
+    
+   
     private void startButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_startButtonMouseClicked
 
-        if(!heightTextField.getText().equals("") && !widthTextField.getText().equals(""))
-        {
-            System.out.println("heigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigthheigth");
-            heightPanel = Integer.parseInt(heightTextField.getText());
-            widthPanel = Integer.parseInt(widthTextField.getText());
-            boolean[][] newCurrentMove = new boolean[heightPanel][widthPanel];
-            boolean[][] newNextMove = new boolean[heightPanel][widthPanel];
-            currentMove = newCurrentMove;
-            nextMove = newNextMove;
-        }
-
-        if(firstTimeBool)
-        {
-            firstTimeBool = false;
-            genNumber = -4;
-        }
-        if(playPressed)
-        {
-            startPressed = !startPressed;
-        }
-        playPressed = true;
-
-        if(playPressed && !startPressed)
-        {
-            startButton.setText("Start");
-        }
-        else
-        if(playPressed && startPressed)
-        {
-            startButton.setText("Pause");
-        }
-        else startButton.setText("Start");
+        startButtonClicked();
     }//GEN-LAST:event_startButtonMouseClicked
+    
+    
 
     /**
      * @param args the command line arguments
@@ -654,6 +691,33 @@ public class GameOfLifeForm extends javax.swing.JFrame {
                 new GameOfLifeForm().setVisible(true);
             }
         });
+    }
+    
+    /**
+     * MyTimer class used to implement run method.
+     */
+    class MyTimer extends TimerTask {
+            public void run() {
+                if(playPressed){
+                    
+                    if(startPressed)
+                    {
+                        for(int i = 0; i < heightPanel; i++){
+                            for(int j = 0; j < widthPanel; j++){
+                                nextMove[i][j] = applyLaws(i,j);
+                            }
+                        }
+                        for(int i = 0; i < heightPanel; i++){
+                            for(int j = 0; j < widthPanel; j++){
+                                currentMove[i][j] = nextMove[i][j];
+                            }
+                        }
+                    }
+                    rePaint();
+                    
+                }    
+                schedule();
+            }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
