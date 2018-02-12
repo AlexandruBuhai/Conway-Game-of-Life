@@ -81,114 +81,131 @@ public class GameOfLifeForm extends javax.swing.JFrame {
                 String itemSelected = selected.toString();
                 clean();
                 
-                
-                switch (itemSelected)
+                try
                 {
-                    case "Block":
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2 +1][widthPanel/2] = true;
-                        currentMove[heightPanel/2][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2+1] = true;
-                        break;
-                    case "Blinker":
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2 +1][widthPanel/2] = true;
-                        currentMove[heightPanel/2-1][widthPanel/2] = true;
-                        
-                        break;
-                    case "Toad":
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2][widthPanel/2+2] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2-1] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2+1] = true;
-                        break;
-                    case "Beacon":
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2+3] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2+2] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2+3] = true;
-                        break;
-                        
-                    case "Glider":
-                        // startPressed = false;
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2-1] = true;
-                        //startPressed = true;
-                        break;
-                    case "Spaceship":
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2-1][widthPanel/2] = true;
-                        currentMove[heightPanel/2-2][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2-2][widthPanel/2-1] = true;
-                        currentMove[heightPanel/2-3][widthPanel/2] = true;
-                        currentMove[heightPanel/2-4][widthPanel/2] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2-1] = true;
-                        //upper top
-                        currentMove[heightPanel/2+1][widthPanel/2-5] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2-6] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2-7] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2-8] = true;
-                        //left
-                        currentMove[heightPanel/2+1][widthPanel/2-12] = true;
-                        currentMove[heightPanel/2][widthPanel/2-13] = true;
-                        currentMove[heightPanel/2-1][widthPanel/2-13] = true;
-                        currentMove[heightPanel/2-2][widthPanel/2-12] = true;
-                        currentMove[heightPanel/2-2][widthPanel/2-14] = true;
-                        currentMove[heightPanel/2-3][widthPanel/2-13] = true;
-                        currentMove[heightPanel/2-4][widthPanel/2-13] = true;
-                        
-                        //upper lower
-                        currentMove[heightPanel/2+2][widthPanel/2-5] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2-6] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2-7] = true;
-                        currentMove[heightPanel/2+2][widthPanel/2-8] = true;
-                        
-                        //lower left
-                        currentMove[heightPanel/2+3][widthPanel/2-9] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2-10] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2-11] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2-12] = true;
-                        
-                        //lower right
-                        currentMove[heightPanel/2+3][widthPanel/2-1] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2-2] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2-3] = true;
-                        currentMove[heightPanel/2+3][widthPanel/2-4] = true;
-                        
-                        //down
-                        currentMove[heightPanel/2+5][widthPanel/2-3] = true;
-                        currentMove[heightPanel/2+5][widthPanel/2-10] = true;
-                        currentMove[heightPanel/2+6][widthPanel/2-9] = true;
-                        currentMove[heightPanel/2+6][widthPanel/2-8] = true;
-                        currentMove[heightPanel/2+6][widthPanel/2-5] = true;
-                        currentMove[heightPanel/2+6][widthPanel/2-4] = true;
-                        break;
-                    case "Pentadecathlon":
-                        currentMove[heightPanel/2][widthPanel/2] = true;
-                        currentMove[heightPanel/2][widthPanel/2-1] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2-2] = true;
-                        currentMove[heightPanel/2-1][widthPanel/2-2]= true;
-                        currentMove[heightPanel/2][widthPanel/2-3] = true;
-                        currentMove[heightPanel/2][widthPanel/2-4] = true;
-                        currentMove[heightPanel/2][widthPanel/2+1] = true;
-                        currentMove[heightPanel/2][widthPanel/2+2] = true;
-                        currentMove[heightPanel/2+1][widthPanel/2+3] = true;
-                        currentMove[heightPanel/2-1][widthPanel/2+3] = true;
-                        currentMove[heightPanel/2][widthPanel/2+4] = true;
-                        currentMove[heightPanel/2][widthPanel/2+5] = true;
-                        
-                        break;
-                    default:
-                        break;
+                    switch (itemSelected)
+                    {
+                        case "Block":
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2 +1][widthPanel/2] = true;
+                            currentMove[heightPanel/2][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2+1] = true;
+                            break;
+                        case "Blinker":
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2 +1][widthPanel/2] = true;
+                            currentMove[heightPanel/2-1][widthPanel/2] = true;
+
+                            break;
+                        case "Toad":
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2][widthPanel/2+2] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2-1] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2+1] = true;
+                            break;
+                        case "Beacon":
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2+3] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2+2] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2+3] = true;
+                            break;
+
+                        case "Glider":
+                            // startPressed = false;
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2-1] = true;
+                            //startPressed = true;
+                            break;
+                        case "Spaceship":
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2-1][widthPanel/2] = true;
+                            currentMove[heightPanel/2-2][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2-2][widthPanel/2-1] = true;
+                            currentMove[heightPanel/2-3][widthPanel/2] = true;
+                            currentMove[heightPanel/2-4][widthPanel/2] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2-1] = true;
+                            //upper top
+                            currentMove[heightPanel/2+1][widthPanel/2-5] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2-6] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2-7] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2-8] = true;
+                            //left
+                            currentMove[heightPanel/2+1][widthPanel/2-12] = true;
+                            currentMove[heightPanel/2][widthPanel/2-13] = true;
+                            currentMove[heightPanel/2-1][widthPanel/2-13] = true;
+                            currentMove[heightPanel/2-2][widthPanel/2-12] = true;
+                            currentMove[heightPanel/2-2][widthPanel/2-14] = true;
+                            currentMove[heightPanel/2-3][widthPanel/2-13] = true;
+                            currentMove[heightPanel/2-4][widthPanel/2-13] = true;
+
+                            //upper lower
+                            currentMove[heightPanel/2+2][widthPanel/2-5] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2-6] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2-7] = true;
+                            currentMove[heightPanel/2+2][widthPanel/2-8] = true;
+
+                            //lower left
+                            currentMove[heightPanel/2+3][widthPanel/2-9] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2-10] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2-11] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2-12] = true;
+
+                            //lower right
+                            currentMove[heightPanel/2+3][widthPanel/2-1] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2-2] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2-3] = true;
+                            currentMove[heightPanel/2+3][widthPanel/2-4] = true;
+
+                            //down
+                            currentMove[heightPanel/2+5][widthPanel/2-3] = true;
+                            currentMove[heightPanel/2+5][widthPanel/2-10] = true;
+                            currentMove[heightPanel/2+6][widthPanel/2-9] = true;
+                            currentMove[heightPanel/2+6][widthPanel/2-8] = true;
+                            currentMove[heightPanel/2+6][widthPanel/2-5] = true;
+                            currentMove[heightPanel/2+6][widthPanel/2-4] = true;
+                            break;
+                        case "Pentadecathlon":
+                            currentMove[heightPanel/2][widthPanel/2] = true;
+                            currentMove[heightPanel/2][widthPanel/2-1] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2-2] = true;
+                            currentMove[heightPanel/2-1][widthPanel/2-2]= true;
+                            currentMove[heightPanel/2][widthPanel/2-3] = true;
+                            currentMove[heightPanel/2][widthPanel/2-4] = true;
+                            currentMove[heightPanel/2][widthPanel/2+1] = true;
+                            currentMove[heightPanel/2][widthPanel/2+2] = true;
+                            currentMove[heightPanel/2+1][widthPanel/2+3] = true;
+                            currentMove[heightPanel/2-1][widthPanel/2+3] = true;
+                            currentMove[heightPanel/2][widthPanel/2+4] = true;
+                            currentMove[heightPanel/2][widthPanel/2+5] = true;
+
+                            break;
+                        default:
+                            break;
+                    }
                 }
-                
+                catch(NullPointerException ex)
+                {
+                    System.out.println("Log: " + ex.toString());
+                    JOptionPane.showMessageDialog(worldPanel, "Form is too big for the grid");
+                    clean();
+                }
+                catch(ArrayIndexOutOfBoundsException ex)
+                {
+                    System.out.println("Log: " + ex.toString());
+                    JOptionPane.showMessageDialog(worldPanel, "Form is too big for the grid");
+                    clean();
+                }
+                catch(Exception ex)
+                {
+                    System.out.println("Log: " + ex.toString());
+                }
                 rePaint();
             }
         });
