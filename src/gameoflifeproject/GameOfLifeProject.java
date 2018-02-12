@@ -34,7 +34,7 @@ package gameoflifeproject;
 /**
  * <h1>Conway's Game of Life Project</h1>
  * <p>
- * <b>Java Project for MFF UK under Assoc. Prof. Petr Hnětynka and PhD. Paolo Arcaini. For course NPRG013.</b><br>
+ * <b>Java Project for MFF UK under Assoc. Prof. Petr Hnětynka and PhD. Paolo Arcaini. For the course NPRG013.</b><br>
  * Conway game of life - A zero-player game, is a cellular automaton devised by
  * the the British mathematician John Horton Conway in 1970. It's a simple "game"
  * based on 4 basic rules:<br><br>
