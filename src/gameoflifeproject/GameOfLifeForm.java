@@ -193,14 +193,24 @@ public class GameOfLifeForm extends javax.swing.JFrame {
                 catch(NullPointerException ex)
                 {
                     System.out.println("Log: " + ex.toString());
-                    JOptionPane.showMessageDialog(worldPanel, "Form is too big for the grid");
+                    if(startPressed)
+                    {
+                        startButtonClicked();
+                    }
                     clean();
+                    JOptionPane.showMessageDialog(worldPanel, "Form is too big for the grid");
+                    
                 }
                 catch(ArrayIndexOutOfBoundsException ex)
                 {
                     System.out.println("Log: " + ex.toString());
-                    JOptionPane.showMessageDialog(worldPanel, "Form is too big for the grid");
+                    if(startPressed)
+                    {
+                        startButtonClicked();
+                    }
                     clean();
+                    JOptionPane.showMessageDialog(worldPanel, "Form is too big for the grid");
+                   
                 }
                 catch(Exception ex)
                 {
